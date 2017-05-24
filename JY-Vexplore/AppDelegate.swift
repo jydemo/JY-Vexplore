@@ -16,6 +16,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        UIApplication.shared.statusBarStyle = .lightContent
+        UIApplication.shared.isStatusBarHidden = true
+        return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        if url.scheme == "todayExtension", let topicID = url.query {
+            let topicVC = TopicViewController()
+            topicVC.topicID = topicID
+            DispatchQueue.main.async(execute: { 
+                UIApplication.topViewController()?.bouncePresent(navigationVCWith: topicVC, completion: nil)
+            })
+        }
         return true
     }
 

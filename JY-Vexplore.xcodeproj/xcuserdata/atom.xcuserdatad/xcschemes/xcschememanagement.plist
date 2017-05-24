@@ -4,15 +4,50 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Gitversion.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 		<key>JY-Vexplore.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>SharedKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>TodayExtension.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>5C39CBC81EB9C93300EE4925</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>5C39DC9E1EB9C3C500A19717</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5C39DCF31EB9C45B00A19717</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5C39DD0A1EB9C4C300A19717</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5C6B44881EC4352A00026AE5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
