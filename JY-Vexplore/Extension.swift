@@ -7,9 +7,16 @@
 //
 
 import UIKit
+import SharedKit
 
 extension UIColor {
-    private static let normalPalette = [
+    class var offWhite: UIColor { return .colorWithWhite(0xf8) }
+    class var middlegray: UIColor { return .colorWithWhite(0x66)}
+    class var borderGray: UIColor { return .colorWithWhite(0xCD) }
+    fileprivate class func colorWithWhite(_ white: UInt) -> UIColor {
+        return UIColor(white: CGFloat(white) / 255.0, alpha: 1.0)
+    }
+    fileprivate static let normalPalette = [
         "#FFFFFF", // background
         "#F8F8F8", // subBackground
         "#CDCDCD", // border
@@ -21,7 +28,7 @@ extension UIColor {
         "#FFFFF8"  // refBackground
     ]
     
-    private static let nightPalette = [
+    fileprivate static let nightPalette = [
         "#142634",
         "#172B44",
         "#38547A",
@@ -33,7 +40,7 @@ extension UIColor {
         "#333333"
     ]
     
-    private class func colorWithHexString(_ hex: String, alpha: CGFloat) -> UIColor {
+    fileprivate class func colorWithHexString(_ hex: String, alpha: CGFloat) -> UIColor {
         var cString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         if (cString.hasPrefix("#")) {
             let startIndex = cString.characters.index(cString.startIndex, offsetBy: 1)
@@ -50,11 +57,11 @@ extension UIColor {
                        alpha: alpha)
     }
     
-    private class func colorWithHexString(_ hex: String) -> UIColor {
+    fileprivate class func colorWithHexString(_ hex: String) -> UIColor {
         return .colorWithHexString(hex, alpha: 1.0)
     }
     
-    private  class var currentViewPalette: [String] {
+    fileprivate  class var currentViewPalette: [String] {
         return UserDefaults.isNightModeEnable ? nightPalette : normalPalette
     }
     class var background: UIColor {
@@ -244,7 +251,7 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return image!
     }
-    class func drawImage(size: CGSize, color: UIColor) -> UIImage? {
+    class func drawImage(_ size: CGSize, color: UIColor) -> UIImage? {
         let rect = CGRect(x: 0, y: 0, width: size.width, height: 1)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
         let context = UIGraphicsGetCurrentContext()
@@ -278,26 +285,26 @@ extension UINavigationBar {
         barTintColor = .background
         tintColor = .desc
         titleTextAttributes = [NSForegroundColorAttributeName: UIColor.body]
-        shadowImage = UIImage.drawImage(size: CGSize(width: frame.width, height: 1), color: .border)
+        shadowImage = UIImage.drawImage(CGSize(width: frame.width, height: 1), color: .border)
         setBackgroundImage(UIImage(), for: .default)
     }
 }
 
 extension UIApplication {
-    class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+    class func topViewController(_ base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
-            return topViewController(base: nav.visibleViewController)
+            return topViewController(nav.visibleViewController)
         }
         if let tab = base as? UITabBarController {
             let moreNavigationController = tab.moreNavigationController
             if let top = moreNavigationController.topViewController, top.view.window != nil {
-                return topViewController(base: top)
+                return topViewController(top)
             } else if let selected = tab.selectedViewController {
-                return topViewController(base:selected)
+                return topViewController(selected)
             }
         }
         if let presented = base?.presentedViewController {
-            return topViewController(base: presented)
+            return topViewController(presented)
         }
         return base
     }
@@ -331,7 +338,7 @@ extension UIViewController {
             complletion?()
         }
     }
-    func bouncePresent(viewController: SwipeTransitionViewController, completion: (() -> Void)?) {
+    func bouncePresent(_ viewController: SwipeTransitionViewController, completion: (() -> Void)?) {
         viewController.transitioningDelegate = viewController
         present(viewController, animated: true, completion: completion)
     }
@@ -386,21 +393,21 @@ extension CGRect {
 }
 
 extension UIApplication {
-    class func topviewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+    class func topviewController(_ base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
-            return topViewController(base: nav.visibleViewController)
+            return topViewController(nav.visibleViewController)
         }
         if let tab = base as? UITabBarController {
             let moreNavigationController = tab.moreNavigationController
             if let top = moreNavigationController.topViewController, top.view.window != nil {
-                return topViewController(base: top)
+                return topViewController(top)
             } else if let selected = tab.selectedViewController {
-                return topViewController(base:selected)
+                return topViewController(selected)
             }
         }
         
         if let presented = base?.presentedViewController {
-            return topviewController(base: presented)
+            return topviewController(presented)
         }
         return base
     }
@@ -414,7 +421,7 @@ extension UITabBar {
         tintColor = .highlight
         isTranslucent = false
         barTintColor = .background
-        shadowImage = UIImage.drawImage(size: CGSize(width: frame.width, height: 1), color: .border)
+        shadowImage = UIImage.drawImage(CGSize(width: frame.width, height: 1), color: .border)
         backgroundImage = UIImage()
     }
 }
@@ -433,6 +440,40 @@ extension Array {
         self = shift(withDistance: distance)
     }
 }
+extension Request {
+    @discardableResult func responseParsableHTML(completion completionHandler: @escaping (DataResponse<HTMLDoc>) -> Void) -> Self {
+        return response(htmlResponseSerizlizer(), completionHandler: completionHandler)
+        }
+    }
+    fileprivate func htmlResponseSerizlizer() -> DataResponseSerializer<HTMLDoc> {
+        enum VeXploRerror: Int {
+            case requestError = 10004
+            case serverError = 10005
+            case invalidDataError = 10006
+            case dataSerializationError = 10007
+        }
+        return DataResponseSerializer { request, response, data, error in
+            if let statusCode = response?.statusCode {
+                if statusCode % 100 == 4 {
+                    let error = NSError(domain: R.String.ErrorDomain, code: VeXploRerror.serverError.rawValue, userInfo: nil)
+                    return .failure(error)
+                }
+            }
+            guard error == nil else {
+                return .failure(error!)
+            }
+            guard  let validData = data else {
+                let error = NSError(domain: R.String.ErrorDomain, code: VeXploRerror.invalidDataError.rawValue, userInfo: nil)
+                return .failure(error)
+            }
+            if let htmlDoc = HTMLDoc(htmlData: validData) {
+                return .success(htmlDoc)
+            }
+            let error = NSError(domain: R.String.ErrorDomain, code: VeXploRerror.dataSerializationError.rawValue, userInfo: nil)
+            return .failure(error)
+        }
+    }
+
 
 
 

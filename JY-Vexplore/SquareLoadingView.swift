@@ -7,108 +7,166 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 enum LoadingStyle: Int {
     case top
     case bottom
 }
+//加载视图的代理
 protocol SquaresLoadingViewDelegate: class{
     func didTriggeredReloading()
 }
 
 class SquareLoadingView: UIView {
-    
-    private lazy var contentView: UIView = {
+    //内容视图
+    fileprivate lazy var contentView: UIView = {
         let view = UIView()
+        //取消自动布局，使用代码布局
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private var  size: CGFloat! {
+    fileprivate var  size: CGFloat! {
         didSet {
            contentViewSize.constant = size
         }
     }
-    
-    private let squareLengthSize = 3
-    private let duration: Double = 0.8
-    private let gapRate: CGFloat = 0.25
-    private var style: LoadingStyle = .top
-    private var squareSize: CGFloat!
-    private var gapSize: CGFloat!
-    private var motionDistance: CGFloat!
-    private var contentViewSize: NSLayoutConstraint!
-    private var squares = [CALayer]()
-    private var squaresOffsetX = [CGFloat]()
-    private var squareOffsetY = [CGFloat]()
-    private var  squareOpacity = [Float]()
-    private(set) var isLoading = false
-    private(set) var isFailed = false
+    ///常数3
+    fileprivate let squareLengthSize = 3
+    fileprivate let duration: Double = 0.8
+    ///比例常数为0.25
+    fileprivate let gapRate: CGFloat = 0.25
+    fileprivate var style: LoadingStyle = .top
+    fileprivate var squareSize: CGFloat!
+    fileprivate var gapSize: CGFloat!
+    fileprivate var motionDistance: CGFloat!
+    fileprivate var contentViewSize: NSLayoutConstraint!
+    ///添加到视图上的图层数组
+    fileprivate var squares = [CALayer]()
+    ///OffsetX数组
+    fileprivate var squaresOffsetX = [CGFloat]()
+    ///OffsetY数组
+    fileprivate var squareOffsetY = [CGFloat]()
+    ///Opacity透明数组
+    fileprivate var  squareOpacity = [Float]()
+    fileprivate(set) var isLoading = false
+    fileprivate(set) var isFailed = false
     weak var delegate: SquaresLoadingViewDelegate?
-    
+    //
     convenience init(loadingStyle: LoadingStyle) {
         self.init(frame: .zero)
+        //设置加载方式
         style = loadingStyle
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        //添加子视图
         addSubview(contentView)
+        //内容视图放在父视图中心
         contentView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         contentView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        //内容视图高宽一致
         contentView.widthAnchor.constraint(equalTo: contentView.heightAnchor).isActive = true
         contentViewSize = NSLayoutConstraint(item: contentView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.0)
         addConstraint(contentViewSize)
+        commonInit()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    private func commonInit() {
+    //
+    fileprivate func commonInit() {
         for _ in -1..<squareLengthSize * squareLengthSize {
+            //新建图层
             let square = CALayer()
+            //图层背景色
             square.backgroundColor = UIColor.body.cgColor
+            //加入图层数组
             squares.append(square)
+            //作为子图层添加到内容视图图层
             contentView.layer.addSublayer(square)
         }
+        //添加手势
         let tap = UITapGestureRecognizer(target: self, action: #selector(reloading))
         addGestureRecognizer(tap)
     }
-    
-    @objc private func reloading() {
+    // MARK: - 重新加载刷新视图
+    @objc fileprivate func reloading() {
+        //刷新失败
         if isFailed {
+            //重新定位
             initSquarePosition()
+        //刷新成功
             isFailed = false
+            //代理实现委托方法
             delegate?.didTriggeredReloading()
         }
     }
-    
+    // MARK: - 重新定位
+    ///重新定位
     func initSquarePosition() {
         iniSquaresNormalPosition()
         initSquares(withOffset: size)
     }
-    
+    // MARK: - 基本位置
+    ///基本位置
     func iniSquaresNormalPosition() {
+        //取出图层数组中的图层
         for square in squares {
+            //从视图中删除
             square.removeFromSuperlayer()
         }
+        //清空数组
         squares.removeAll()
         for _ in -1..<squareLengthSize * squareLengthSize {
+            //新建图层 设置颜色 添加到数组和视图
             let square = CALayer()
             square.backgroundColor = UIColor.body.cgColor
             squares.append(square)
             contentView.layer.addSublayer(square)
         }
+        //没加载
         isLoading = false
+        //size为视图的宽高的最小值
         size = min(frame.width, frame.height)
+        //根据size大小 决定最终的size
         size = size > 0 ? size : R.Constant.LoadingViewHeight
-        
+        //根据size计算出squareSize的值
         squareSize = size / (CGFloat(squareLengthSize) + 2 + CGFloat(squareLengthSize + 1) * gapRate)
+        //squareSize 乘上比例
         gapSize = gapRate * squareSize
+        //squareSize 加上比例
         motionDistance = squareSize + gapSize
+        //清空数组
         squaresOffsetX.removeAll()
         squareOffsetY.removeAll()
         squareOpacity.removeAll()
-        
+        //
         for row in 0..<squareLengthSize {
             for colum in 0..<squareLengthSize {
                 var offsetX: CGFloat!
@@ -183,15 +241,15 @@ class SquareLoadingView: UIView {
     
     func stopLoading(withSuccess success: Bool, completion: CompletionTask?) {
         for position in -1..<squareLengthSize * squareLengthSize {
-            let square = squares[position + 1]
-            square.removeAllAnimations()
-            square.opacity = 0
-            square.isHidden = true
+            let squaare = squares[position + 1]
+            squaare.removeAllAnimations()
+            squaare.opacity = 0
+            squaare.isHidden = true
         }
         
         var path = [Int]()
         var desiredPoints = [CGPoint]()
-        let distance = motionDistance / sqrt(2.0)
+        let distance: CGFloat = 3.0 //motionDistance / sqrt(2.0)
         var centerSquare: CALayer!
         if success {
             centerSquare = squares[8]
@@ -229,7 +287,7 @@ class SquareLoadingView: UIView {
         CATransaction.commit()
     }
     
-    private func initSquares(withOffset offset: CGFloat) {
+    fileprivate func initSquares(withOffset offset: CGFloat) {
         if style == .top {
             for row in 0..<squareLengthSize {
                 for column in 0..<squareLengthSize {
@@ -246,7 +304,7 @@ class SquareLoadingView: UIView {
         }
     }
     
-    private func addSquareAnimation(positionIndex position: Int) {
+    fileprivate func addSquareAnimation(positionIndex position: Int) {
         let square = squares[position + 1]
         square.isHidden = false
         

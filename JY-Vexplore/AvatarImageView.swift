@@ -9,7 +9,7 @@
 import UIKit
 
 class AvatarImageView: UIImageView {
-    private var imageDownloadID: ImageDownload?
+    fileprivate var imageDownloadID: ImageDownload?
     
     func avatarImage(withURL url: URL) {
         /*setImage(withURL: url, placeholerImage: R.Image.AvatarPlaceholder, imageProcessing: { (image) -> UIImage in

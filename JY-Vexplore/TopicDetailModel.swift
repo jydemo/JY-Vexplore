@@ -10,26 +10,26 @@ import Foundation
 
 class TopicDetailModel: NSObject
 {
-    private(set) var avatar: String?
-    private(set) var nodeName: String?
-    private(set) var nodeId: String?
-    private(set) var username: String?
-    private(set) var topicTitle: String?
-    private(set) var topicContent: String!
-    private(set) var date: String?
-    private(set) var favoriteNum: String?
-    private(set) var token: String?
-    private(set) var commentTotalPages = 1
-    private(set) var isFavorite = false
-    private(set) var topicCommentTotalCount: String?
-    private(set) var reportUrl: String?
-    private(set) var topicId: String?
+    fileprivate(set) var avatar: String?
+    fileprivate(set) var nodeName: String?
+    fileprivate(set) var nodeId: String?
+    fileprivate(set) var username: String?
+    fileprivate(set) var topicTitle: String?
+    fileprivate(set) var topicContent: String!
+    fileprivate(set) var date: String?
+    fileprivate(set) var favoriteNum: String?
+    fileprivate(set) var token: String?
+    fileprivate(set) var commentTotalPages = 1
+    fileprivate(set) var isFavorite = false
+    fileprivate(set) var topicCommentTotalCount: String?
+    fileprivate(set) var reportUrl: String?
+    fileprivate(set) var topicId: String?
     
-    init(id: String)
+    init(id: String, rootNode: HTMLNode)
     {
         self.topicId = id
-    }
-        /*if let node = rootNode.xPath("./div[1]/a[2]").first
+        
+        if let node = rootNode.xPath("./div[1]/a[2]").first
         {
             nodeName = node.content
             if var href = node["href"],
@@ -54,7 +54,7 @@ class TopicDetailModel: NSObject
             }
         }
         date = rootNode.xPath("./div[1]/small/text()").last?.content
-        favoriteNum = rootNode.xPath(".//div[@class='inner']/div/span").first?.content?.stringByRemovingNewLinesAndWhitespace()
+        favoriteNum = rootNode.xPath(".//div[@class='inner']/div/span").first?.content?.stringbyRemoveingNewLinesAndWhitespace()
         if rootNode.xPath(".//a[text()='取消收藏']").count > 0
         {
             isFavorite = true
@@ -78,6 +78,7 @@ class TopicDetailModel: NSObject
         {
             reportUrl = id.substring(with: Range(startRange.upperBound..<endRange.lowerBound))
         }
-    }*/
+    }
+    
     
 }

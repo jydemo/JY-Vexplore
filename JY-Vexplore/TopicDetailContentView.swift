@@ -35,6 +35,10 @@ class TopicDetailContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func load(with model: TopicDetailModel) {
+    
+    }
+    
    /* private func customizeHtml(_ html: String) -> String {
         let htmlHeader = "<html><head><title>VeXplore_Customize_Title</title><meta content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0' name='viewport'>"
         let script = try! String(contentsOfFile: Bundle.main.path(forResource: "ImageClick", ofType: "js")!, encoding: .utf8)

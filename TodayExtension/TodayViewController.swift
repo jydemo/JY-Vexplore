@@ -11,8 +11,8 @@ import NotificationCenter
 import SharedKit
 
 class TodayViewController: UIViewController, NCWidgetProviding, UITableViewDataSource, UITableViewDelegate {
-    private let rowHeight: CGFloat = 37.0
-    private var data = [TopicItem]()
+    fileprivate let rowHeight: CGFloat = 37.0
+    fileprivate var data = [TopicItem]()
     fileprivate lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +43,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UITableViewDataS
        loadData()
     }
     
-    func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
+    func widgetPerformUpdate(_ completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         // Perform any setup necessary in order to update the view.
         
         // If an error is encountered, use NCUpdateResult.Failed
@@ -59,7 +59,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UITableViewDataS
         }
     }
     
-    private func loadData() {
+    fileprivate func loadData() {
         let url = "https://www.v2ex.com/api/topics/hot.json"
         let request = URLRequest(url: URL(string: url)!)
         let session = URLSession(configuration: .default)
@@ -85,7 +85,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UITableViewDataS
         
     }
     
-    private  struct TopicItem {
+    fileprivate  struct TopicItem {
         let id: String
         let title: String
     }

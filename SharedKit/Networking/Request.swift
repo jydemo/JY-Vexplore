@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Request
+open class Request
 {
     let session: URLSession
     var data = Data()
@@ -25,7 +25,7 @@ public class Request
         return task?.originalRequest
     }
     
-    public var response: HTTPURLResponse? {
+    open var response: HTTPURLResponse? {
         return task?.response as? HTTPURLResponse
     }
     
@@ -53,7 +53,7 @@ public class Request
         task.resume()
     }
     
-    public func cancel()
+    open func cancel()
     {
         guard let task = task else { return }
         task.cancel()
@@ -65,7 +65,7 @@ public class Request
         queue.isSuspended = false
     }
     
-    func didReceive(data: Data)
+    func didReceive(_ data: Data)
     {
         self.data.append(data)
     }
@@ -77,7 +77,7 @@ private let NoContentStatusCodes: Set<Int> = [204, 205]
 extension Request
 {
     @discardableResult
-    public func response<T>(responseSerializer: DataResponseSerializer<T>, completionHandler: @escaping (DataResponse<T>) -> Void) -> Self
+    public func response<T>(_ responseSerializer: DataResponseSerializer<T>, completionHandler: @escaping (DataResponse<T>) -> Void) -> Self
     {
         queue.addOperation {
             let result = responseSerializer.serializeResponse(self.request,
@@ -98,12 +98,12 @@ extension Request
     
     // MARK: - String Response
     @discardableResult
-    public func responseString(completionHandler: @escaping (DataResponse<String>) -> Void) -> Self
+    public func responseString(_ completionHandler: @escaping (DataResponse<String>) -> Void) -> Self
     {
-        return response(responseSerializer: stringResponseSerializer(), completionHandler: completionHandler)
+        return response(stringResponseSerializer(), completionHandler: completionHandler) //response(responseSerializer: stringResponseSerializer(), completionHandler: completionHandler)
     }
     
-    private func serializeResponseString(response: HTTPURLResponse?, data: Data?, error: Error?) -> Result<String>
+    fileprivate func serializeResponseString(_ response: HTTPURLResponse?, data: Data?, error: Error?) -> Result<String>
     {
         guard error == nil else {
             return .failure(error!)
@@ -133,21 +133,21 @@ extension Request
         }
     }
     
-    private func stringResponseSerializer() -> DataResponseSerializer<String>
+    fileprivate func stringResponseSerializer() -> DataResponseSerializer<String>
     {
         return DataResponseSerializer { _, response, data, error in
-            return self.serializeResponseString(response: response, data: data, error: error)
+            return self.serializeResponseString(response, data: data, error: error)
         }
     }
     
     // MARK: - Json Response
     @discardableResult
-    public func responseJSON(completionHandler: @escaping (DataResponse<Any>) -> Void) -> Self
+    public func responseJSON(_ completionHandler: @escaping (DataResponse<Any>) -> Void) -> Self
     {
-        return response(responseSerializer: jsonResponseSerializer(), completionHandler: completionHandler)
+        return response(jsonResponseSerializer(), completionHandler: completionHandler) //response(responseSerializer: jsonResponseSerializer(), completionHandler: completionHandler)
     }
     
-    private func serializeResponseJSON(response: HTTPURLResponse?,
+    fileprivate func serializeResponseJSON(_ response: HTTPURLResponse?,
                                        data: Data?,
                                        error: Error?) -> Result<Any>
     {
@@ -172,10 +172,10 @@ extension Request
         }
     }
     
-    private func jsonResponseSerializer() -> DataResponseSerializer<Any>
+    fileprivate func jsonResponseSerializer() -> DataResponseSerializer<Any>
     {
         return DataResponseSerializer { _, response, data, error in
-            return self.serializeResponseJSON(response: response, data: data, error: error)
+            return self.serializeResponseJSON(response, data: data, error: error)
         }
     }
     

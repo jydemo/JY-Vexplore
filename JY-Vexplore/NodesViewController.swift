@@ -9,7 +9,7 @@
 import UIKit
 
 class NodesViewController: UIViewController {
-    var searchVC = NodesViewController()
+   // var searchVC = NodesViewController()
     override func viewDidLoad() {
         super.viewDidLoad()
 

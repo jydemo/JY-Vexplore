@@ -73,14 +73,14 @@ extension URLRequest
         return urlRequest
     }
     
-    private func query(_ parameters: [String: String]) -> String
+    fileprivate func query(_ parameters: [String: String]) -> String
     {
         let escapedParameters = parameters.map { (escape($0.key), escape($0.value)) }
         let result = escapedParameters.map { "\($0)=\($1)" }.joined(separator: "&")
         return result
     }
     
-    private func escape(_ string: String) -> String
+    fileprivate func escape(_ string: String) -> String
     {
         var allowedCharacterSet = CharacterSet.urlQueryAllowed
         allowedCharacterSet.remove(charactersIn: "!*'();:@&=+$,#[]") // remove reserved characters

@@ -10,9 +10,9 @@ import Foundation
 class SessionManager: NSObject, URLSessionDataDelegate
 {
     static let shared = SessionManager()
-    private var session = URLSession()
-    private var requests = [Int: Request]()
-    private let lock = NSLock()
+    fileprivate var session = URLSession()
+    fileprivate var requests = [Int: Request]()
+    fileprivate let lock = NSLock()
     
     subscript(task: URLSessionTask) -> Request? {
         get
@@ -29,7 +29,7 @@ class SessionManager: NSObject, URLSessionDataDelegate
         }
     }
     
-    private override init()
+    fileprivate override init()
     {
         super.init()
         session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
@@ -54,7 +54,7 @@ class SessionManager: NSObject, URLSessionDataDelegate
         }
     }
     
-    private func request(with urlRequest: URLRequest) -> Request
+    fileprivate func request(with urlRequest: URLRequest) -> Request
     {
         let task = session.dataTask(with: urlRequest)
         let request = Request(session: session, task: task)
@@ -63,7 +63,7 @@ class SessionManager: NSObject, URLSessionDataDelegate
         return request
     }
     
-    private func request(with error: Error) -> Request
+    fileprivate func request(with error: Error) -> Request
     {
         let request = Request(session: session, task: nil, error: error)
         request.resume()
@@ -71,7 +71,7 @@ class SessionManager: NSObject, URLSessionDataDelegate
     }
     
     // MARK: - URLSessionDataDelegate
-    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
+    open func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
     {
         if let request = self[task]
         {
@@ -81,11 +81,12 @@ class SessionManager: NSObject, URLSessionDataDelegate
     }
     
     // MARK: - URLSessionDataDelegate
-    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data)
+    open func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data)
     {
         if let request = self[dataTask]
         {
-            request.didReceive(data: data)
+            //request.didReceive(data: data)
+            request.didReceive(data)
         }
     }
     

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SafariServices
+
 enum PersonInfoType: Int {
     case homepage = 0
     case twitter
@@ -32,18 +34,24 @@ class BaseProfileViewController: SwipeTransitionViewController {
         case replies
     }
     
-    fileprivate lazy var profileTableView: UITableView = {
+    lazy var profileTableView: UITableView = {
         let tableView = UITableView(frame: self.view.bounds, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.register(ProfileAvatarCell.self, forCellReuseIdentifier: String(describing: ProfileAvatarCell.self))
+        tableView.register(ProfileSectionHeaderCell.self, forCellReuseIdentifier: String(describing: ProfileSectionHeaderCell.self))
+        tableView.register(AboutMeCell.self, forCellReuseIdentifier: String(describing: AboutMeCell.self))
+        tableView.register(PersonalInfoCell.self, forCellReuseIdentifier: String(describing: PersonalInfoCell.self))
         tableView.estimatedRowHeight = R.Constant.EstimatedRowHeight
-        tableView.backgroundColor = .background
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.backgroundColor = .white
         tableView.separatorStyle = .none
         return tableView
     }()
     
-    private var personInfoIconDict = [String: String]()
+    fileprivate var personInfoIconDict = [String: String]()
+    var userProfile: ProfileModel?
     var username: String?
     var personInfos = [PersionInfo]()
     
@@ -51,6 +59,8 @@ class BaseProfileViewController: SwipeTransitionViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        navigationController?.navigationBar.isTranslucent = false
+        
         view.addSubview(profileTableView)
         let bindings: [String: Any] = [
             "profileTableView": profileTableView,
@@ -65,15 +75,45 @@ class BaseProfileViewController: SwipeTransitionViewController {
     @objc private func refreshColorScheme() {
        navigationController?.navigationBar.setupNavigationbar()
         profileTableView.backgroundColor = .background
-        view.backgroundColor = .background
+        view.backgroundColor = .white
     }
     
     func numberOfPersonalInfoforCell() -> Int {
-       // var numberOfPersonalInfoCell = 0
+       var numberOfPersonalInfoCell = 0
         personInfos.removeAll()
         personInfoIconDict.removeAll()
-        //if let website =
-        return 0
+        if let website = userProfile?.website, website.isEmpty == false {
+            numberOfPersonalInfoCell += 1
+            let personIfno = PersionInfo(type: .homepage, text: website)
+            personInfos.append(personIfno)
+        }
+        if let twitter = userProfile?.twitter, twitter.isEmpty == false {
+            numberOfPersonalInfoCell += 1
+            let personInfo = PersionInfo(type: .twitter, text: twitter)
+            personInfos.append(personInfo)
+            
+        }
+        if let location = userProfile?.location, location.isEmpty == false {
+            numberOfPersonalInfoCell += 1
+            let personIfno = PersionInfo(type: .location, text: location)
+            personInfos.append(personIfno)
+        }
+        if let github = userProfile?.github, github.isEmpty == false {
+            numberOfPersonalInfoCell += 1
+            let personIfno = PersionInfo(type: .github, text: github)
+            personInfos.append(personIfno)
+        }
+        if let twitch = userProfile?.twitch, twitch.isEmpty == false {
+            numberOfPersonalInfoCell += 1
+            let personInfo = PersionInfo(type: .twitch, text: twitch)
+            personInfos.append(personInfo)
+        }
+        if let psn = userProfile?.psn, psn.isEmpty == false {
+            numberOfPersonalInfoCell += 1
+            let personInfo = PersionInfo(type: .psn, text: psn)
+            personInfos.append(personInfo)
+        }
+        return numberOfPersonalInfoCell > 0 ? (numberOfPersonalInfoCell + 1) : 0
     }
 
     override func didReceiveMemoryWarning() {
@@ -111,20 +151,49 @@ extension BaseProfileViewController: UITableViewDataSource, UITableViewDelegate 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let profileSection = ProfileSection(rawValue: indexPath.section)!
-        /*switch profileSection {
+        switch profileSection {
         case .forumActivity:
             let forumActivitySectionRow = ForumAtivitySectionRow(rawValue: indexPath.row)!
             switch forumActivitySectionRow {
             case .topics:
-                //guard let userProfile =
+                guard let userProfile = userProfile, userProfile.topicHidden == false, userProfile.topicsNum > 0 else {
+                    return
+                }
+                let membertopicsVC = MemberTopicsViewController()
+                membertopicsVC.username = username
+                DispatchQueue.main.async(execute: {
+                    self.bouncePresent(navigationVCWith: membertopicsVC, completion: {
+                        
+                    })
+                })
             case .replies:
+                guard let userProfile = userProfile, userProfile.topicHidden == false, userProfile.topicsNum > 0 else {
+                    return
+                }
+                let memberrepliesVC = MemberTopicsViewController()
+                memberrepliesVC.username = username
+                DispatchQueue.main.async(execute: {
+                    self.bouncePresent(navigationVCWith: memberrepliesVC, completion: {
+                        
+                    })
+                })
             default:
                 break
             }
+            
         case .personInfo:
+            if indexPath.row > 0 {
+                let personInfo = personInfos[indexPath.row - 1]
+                let escapedString = personInfo.text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                if let urlString = escapedString, let url = URL(string: urlString) {
+                    let safariVC = SFSafariViewController(url: url, entersReaderIfAvailable: true)
+                    present(safariVC, animated: true, completion: nil)
+                }
+                
+            }
             
         default:
             break
-        }*/
+        }
     }
 }

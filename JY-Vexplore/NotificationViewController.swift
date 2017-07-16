@@ -8,12 +8,23 @@
 
 import UIKit
 
-class NotificationViewController: UIViewController {
+class NotificationViewController: BasetableViewController {
+    private var currentPage = 1
+    private var totalPageNum = 1
     var username: String?
+    //private var notifications
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        navigationItem.title = R.String.Notification
+        if currentPage >= totalPageNum {
+            enableBottomLoading = false
+        } else {
+            tableView.tableFooterView = tableFooterView
+            enableBottomLoading = true
+            bottomLoadingView.iniSquaresNormalPosition()
+        }
     }
 
     override func didReceiveMemoryWarning() {

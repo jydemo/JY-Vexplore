@@ -12,10 +12,14 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    fileprivate lazy var mainVC = MainViewController.shared
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        UIApplication.shared.statusBarStyle = UserDefaults.isNightModeEnable ? .lightContent : .default
+        window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = mainVC
+        self.window?.makeKeyAndVisible()
         UIApplication.shared.statusBarStyle = .lightContent
         UIApplication.shared.isStatusBarHidden = true
         return true

@@ -26,7 +26,7 @@ public struct JSON
         }
     }
     
-    private var object: Any {
+    fileprivate var object: Any {
         get
         {
             switch type
@@ -66,9 +66,9 @@ public struct JSON
     }
     
     fileprivate var rawArray = [Any]()
-    private var rawDictionary = [String: Any]()
-    private var rawString = ""
-    private let rawNull = NSNull()
+    fileprivate var rawDictionary = [String: Any]()
+    fileprivate var rawString = ""
+    fileprivate let rawNull = NSNull()
     fileprivate var type: Type = .null
     public static let null = JSON(object: NSNull())
     
@@ -100,9 +100,9 @@ extension JSON: Swift.Sequence
 
 public struct JSONIterator: IteratorProtocol
 {
-    private var type: Type
-    private var arrayIterator: IndexingIterator<[Any]>?
-    private var arrayIndex = 0
+    fileprivate var type: Type
+    fileprivate var arrayIterator: IndexingIterator<[Any]>?
+    fileprivate var arrayIndex = 0
     
     init(json: JSON)
     {

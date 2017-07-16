@@ -106,11 +106,11 @@ class BasetableViewController: SwipeTransitionViewController, UITableViewDataSou
         let bindings = ["topLoadingView": topLoadingView,
                         "bottomLoadingView": bottomLoadingView]
         tableHeaderView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[topLoadingView]|", metrics: nil, views: bindings))
-        topLoadingView.bottomAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
+        topLoadingView.bottomAnchor.constraint(equalTo: tableHeaderView.bottomAnchor).isActive = true
         topLoadingView.heightAnchor.constraint(equalToConstant: R.Constant.LoadingViewHeight).isActive = true
-        tableFooterView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bottomLoadingView]|", metrics: nil, views: bindings))
-        bottomLoadingView.topAnchor.constraint(equalTo: tableFooterView.topAnchor).isActive = true
-        bottomLoadingView.heightAnchor.constraint(equalToConstant: R.Constant.LoadingViewHeight).isActive = true
+        //tableFooterView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[bottomLoadingView]|", metrics: nil, views: bindings))
+        //bottomLoadingView.topAnchor.constraint(equalTo: tableFooterView.topAnchor).isActive = true
+        //bottomLoadingView.heightAnchor.constraint(equalToConstant: R.Constant.LoadingViewHeight).isActive = true
         
         tableView.addSubview(centerMessageLabel)
         tableView.addSubview(topReminderLabel)
@@ -125,6 +125,7 @@ class BasetableViewController: SwipeTransitionViewController, UITableViewDataSou
         tableView.tableHeaderView = tableHeaderView
         refreshColorScheme()
         NotificationCenter.default.addObserver(self, selector: #selector(refreshColorScheme), name: NSNotification.Name.Setting.NightModeDidChange, object: nil)
+        topLoadingRequest()
     }
     @objc private func refreshColorScheme() {
         navigationController?.navigationBar.setupNavigationbar()
@@ -139,6 +140,14 @@ class BasetableViewController: SwipeTransitionViewController, UITableViewDataSou
         // Dispose of any resources that can be recreated.
     }
     
+    func stopLoading(withLoadingStyle style: LoadingStyle, success: Bool, completion: CompletionTask?) {
+        switch style {
+        case .top:
+            topLoadingView.stopLoading(withSuccess: success, completion: completion)
+        case .bottom:
+             bottomLoadingView.stopLoading(withSuccess: success, completion: completion)
+        }
+    }
 
     /*
     // MARK: - Navigation
@@ -211,7 +220,7 @@ class BasetableViewController: SwipeTransitionViewController, UITableViewDataSou
     
     func initTopLoading(shouldResetContent reset: Bool = false) {
         if reset {
-            
+            resetContent()
         }
         topLoadingView.initSquarePosition()
         let offsetY = tableView.contentOffset.y - R.Constant.LoadingViewHeight

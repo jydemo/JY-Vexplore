@@ -11,21 +11,21 @@ import UIKit
 class SegmentControl: UIControl, UIGestureRecognizerDelegate {
     
     
-    private let titleLabelsView = UIView()
-    private let selectedTitleLabeslView = UIView()
-    private var initialIndicatorViewFrame: CGRect?
-    private var titleLabelsCount: Int { return titleLabelsView.subviews.count}
-    private var titleLabels: [UILabel] { return titleLabelsView.subviews as! [UILabel]}
-    private var selectedtitleLabels: [UILabel] { return selectedTitleLabeslView.subviews as! [UILabel]}
-    private var allTitleLabels: [UILabel] { return titleLabels + selectedtitleLabels}
-    private let indicatorViewInset: CGFloat = 2.0
-    private var totalInsetSize: CGFloat { return indicatorViewInset * 2.0}
-    private var tapGestureRecognizer: UITapGestureRecognizer!
-    private var panGestureRecognizer: UIPanGestureRecognizer!
-    private(set) var selectedIndex = 0
+    fileprivate let titleLabelsView = UIView()
+    fileprivate let selectedTitleLabeslView = UIView()
+    fileprivate var initialIndicatorViewFrame: CGRect?
+    fileprivate var titleLabelsCount: Int { return titleLabelsView.subviews.count}
+    fileprivate var titleLabels: [UILabel] { return titleLabelsView.subviews as! [UILabel]}
+    fileprivate var selectedtitleLabels: [UILabel] { return selectedTitleLabeslView.subviews as! [UILabel]}
+    fileprivate var allTitleLabels: [UILabel] { return titleLabels + selectedtitleLabels}
+    fileprivate let indicatorViewInset: CGFloat = 2.0
+    fileprivate var totalInsetSize: CGFloat { return indicatorViewInset * 2.0}
+    fileprivate var tapGestureRecognizer: UITapGestureRecognizer!
+    fileprivate var panGestureRecognizer: UIPanGestureRecognizer!
+    fileprivate(set) var selectedIndex = 0
     
-    private class IndicationView: UIView {
-        private var cornerRadius: CGFloat! {
+    fileprivate class IndicationView: UIView {
+        fileprivate var cornerRadius: CGFloat! {
             didSet {
                 layer.cornerRadius = cornerRadius
                 titleMaskView.layer.cornerRadius = cornerRadius
@@ -50,7 +50,7 @@ class SegmentControl: UIControl, UIGestureRecognizerDelegate {
         
     }
     
-    private lazy var indicatorView: IndicationView = {
+    fileprivate lazy var indicatorView: IndicationView = {
         let view = IndicationView()
         view.layer.cornerRadius = 11
         view.layer.masksToBounds = true
@@ -58,7 +58,7 @@ class SegmentControl: UIControl, UIGestureRecognizerDelegate {
         return view
     }()
     
-    private var titles: [String] {
+    fileprivate var titles: [String] {
         get {
             let titleLabels = titleLabelsView.subviews as! [UILabel]
             return titleLabels.map { $0.text!}
@@ -114,7 +114,7 @@ class SegmentControl: UIControl, UIGestureRecognizerDelegate {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    private func setup() {
+    fileprivate func setup() {
         layer.masksToBounds = true
         layer.cornerRadius = 13.0
         layer.borderWidth = 1.0
@@ -139,12 +139,12 @@ class SegmentControl: UIControl, UIGestureRecognizerDelegate {
         return super.gestureRecognizerShouldBegin(gestureRecognizer)
     }
     
-    @objc private func tapped(_ gestureRecognizer: UITapGestureRecognizer) {
+    @objc fileprivate func tapped(_ gestureRecognizer: UITapGestureRecognizer) {
         let location = gestureRecognizer.location(in: self)
         setSelectedIndex(nearesIndex(toPoint: location))
     }
     
-    @objc private func pan(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc fileprivate func pan(_ gestureRecognizer: UIPanGestureRecognizer) {
         switch gestureRecognizer.state {
         case .began:
             initialIndicatorViewFrame = indicatorView.frame
@@ -177,7 +177,7 @@ class SegmentControl: UIControl, UIGestureRecognizerDelegate {
         }
     }
     
-    private func elementFrame(forindex index: Int) -> CGRect {
+    fileprivate func elementFrame(forindex index: Int) -> CGRect {
         let elementWidth = (bounds.width - totalInsetSize) / CGFloat(titleLabelsCount)
         return CGRect(x: CGFloat(index) * elementWidth + indicatorViewInset, y: indicatorViewInset, width: elementWidth, height: bounds.height - totalInsetSize)
     }
@@ -188,7 +188,7 @@ class SegmentControl: UIControl, UIGestureRecognizerDelegate {
         moveIndicator(to: index, animated: animated, shouldSendEvent: selectedIndex != oldIndex)
     }
     
-    private func moveIndicator(to index: Int, animated: Bool, shouldSendEvent: Bool) {
+    fileprivate func moveIndicator(to index: Int, animated: Bool, shouldSendEvent: Bool) {
         if shouldSendEvent {
             sendActions(for: .valueChanged)
         }
@@ -201,11 +201,11 @@ class SegmentControl: UIControl, UIGestureRecognizerDelegate {
         }
     }
     
-    private func moveIndicatorView() {
+    fileprivate func moveIndicatorView() {
         self.indicatorView.frame = self.titleLabels[selectedIndex].frame
         self.layoutIfNeeded()
     }
-    private func nearesIndex(toPoint point: CGPoint) -> Int {
+    fileprivate func nearesIndex(toPoint point: CGPoint) -> Int {
         let distances = titleLabels.map { abs(point.x - $0.center.x )}
         return distances.index(of: distances.min()!)!
     }

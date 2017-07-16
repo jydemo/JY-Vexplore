@@ -25,28 +25,28 @@ class HorizontalTabsCell: UICollectionViewCell {
         return label
     }()
     
-    private lazy var bottomLine: UIView = {
+    fileprivate lazy var bottomLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .body
         view.isHidden = true
         return view
     }()
-    private lazy var  leftLine: UIView = {
+    fileprivate lazy var  leftLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .border
         view.isHidden = true
         return view
     }()
-    private lazy var rightLine: UIView = {
+    fileprivate lazy var rightLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .border
         view.isHidden = true
         return view
     }()
-    private var bottomLineWidth: NSLayoutConstraint!
+    fileprivate var bottomLineWidth: NSLayoutConstraint!
     override var isSelected: Bool {
         didSet {
             label.isHighlighted = isSelected
@@ -129,7 +129,7 @@ class HorizontalTabsCell: UICollectionViewCell {
 }
 
 class HorizontalTabsView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    private let cellwith: CGFloat = 66.0
+    fileprivate let cellwith: CGFloat = 66.0
     weak var tabsDelegate: HorizontalTabsViewDelegate?
     convenience init() {
         let layout = UICollectionViewFlowLayout()

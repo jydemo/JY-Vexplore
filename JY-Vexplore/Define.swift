@@ -10,3 +10,4 @@ import Foundation
 
 typealias CompletionTask = (_ success: Bool) -> Void
 typealias IgnoreHandler = (_ topicID: String) -> Void
+typealias UnfavoriteHandler = (_ topicID: String) -> Void

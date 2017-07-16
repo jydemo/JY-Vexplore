@@ -9,10 +9,10 @@
 import UIKit
 
 class SwipeDismissInteractiveTransition: UIPercentDrivenInteractiveTransition, UIGestureRecognizerDelegate {
-    weak private var presentedVC: SwipeTransitionViewController!
+    weak fileprivate var presentedVC: SwipeTransitionViewController!
     fileprivate var interactionEnabled = false
-    private var shouldComplete = false
-    private var touchStartPoint: CGPoint!
+    fileprivate var shouldComplete = false
+    fileprivate var touchStartPoint: CGPoint!
     fileprivate var dismissStyle: TransitionDismissStyle = .down
     
     convenience init(presentedVC  : SwipeTransitionViewController) {
@@ -24,7 +24,7 @@ class SwipeDismissInteractiveTransition: UIPercentDrivenInteractiveTransition, U
         presentedVC.view.addGestureRecognizer(gesture)
     }
     
-    @objc private func handleGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc fileprivate func handleGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
         switch gestureRecognizer.state {
         case .began:
             interactionEnabled = true
@@ -66,7 +66,7 @@ enum TransitionPresentStyle: Int {
 }
 
 class BouncePressentTransition: NSObject, UIViewControllerAnimatedTransitioning {
-    private let presentDuration = 0.6
+    fileprivate let presentDuration = 0.6
     fileprivate var presentStyle: TransitionPresentStyle = .vertical
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval
     {
@@ -102,7 +102,7 @@ enum TransitionDismissStyle: Int {
 }
 
 class SwipeDismissTransition: NSObject, UIViewControllerAnimatedTransitioning {
-    private let dismissDuration = 0.45
+    fileprivate let dismissDuration = 0.45
     fileprivate var dismissStyle: TransitionDismissStyle = .down
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return dismissDuration
@@ -126,7 +126,7 @@ class SwipeDismissTransition: NSObject, UIViewControllerAnimatedTransitioning {
             containerView.sendSubview(toBack: toVC.view)
             toVC.view.alpha = 0.3
             toVC.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-            let animations: (Void) -> Void = {
+            let animations: () -> Void = {
                 fromVC.view.frame = finalFrame
                 toVC.view.alpha = 1.0
                 toVC.view.transform = CGAffineTransform.identity
@@ -148,9 +148,9 @@ class SwipeDismissTransition: NSObject, UIViewControllerAnimatedTransitioning {
 }
 
 class SwipeTransitionViewController: UIViewController, UIViewControllerTransitioningDelegate {
-    private let presentTransition = BouncePressentTransition()
-    private var dismissTransition: SwipeDismissTransition!
-    private var swipeDismissInteractiveTransition: SwipeDismissInteractiveTransition!
+    fileprivate let presentTransition = BouncePressentTransition()
+    fileprivate var dismissTransition: SwipeDismissTransition!
+    fileprivate var swipeDismissInteractiveTransition: SwipeDismissInteractiveTransition!
     var presentStyle: TransitionPresentStyle = .vertical
     var dismissStyle: TransitionDismissStyle = .down
     var programaticScrollEnable = true

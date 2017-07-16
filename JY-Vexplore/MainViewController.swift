@@ -9,17 +9,18 @@
 import UIKit
 
 class MainViewController: UITabBarController {
-    
+//    单例
     static let shared = MainViewController()
+//    tabbar对应的控制器
+    fileprivate let homeVC = HomePageViewController()
+    fileprivate let nodesVc = NodesViewController()
+    fileprivate let searchVC = SiteSearchViewController()
+    fileprivate var notificationVC: NotificationViewController!
+    fileprivate var profileVC: MyProfileViewController!
+//
+    fileprivate var notificationTabItem: UITabBarItem!
     
-    private let homeVC = HomePageViewController()
-    private let nodesVc = NodesViewController()
-    private let searchVC = SiteSearchViewController()
-    private var notificationVC: NotificationViewController!
-    private var profileVC: MyProfileViewController!
-    private var notificationTabItem: UITabBarItem!
-    
-    private init() {
+    fileprivate init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -31,22 +32,57 @@ class MainViewController: UITabBarController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        buildUI()
     }
-    
-    private func buildUI() {
+    //MARK: - buildUI
+    fileprivate func buildUI() {
+//        是否登陆，是， 从缓存中加载 NodesViewController
         if User.shared.isLogin == true, let diskCachePAth = cachePathString(withfilename: NodesViewController.description()), let unarchiveVC = NSKeyedUnarchiver.unarchiveObject(withFile: diskCachePAth), unarchiveVC is NotificationViewController {
+//            配置从缓存中加载的NotificationViewController
             let VC = unarchiveVC as! NotificationViewController
             if VC.username == User.shared.username {
                 notificationVC = VC
             }
+        } else {
+            notificationVC = NotificationViewController()
         }
-        notificationVC = notificationVC ?? NotificationViewController()
+//        如果没有登录，新生成一个NotificationViewController控制器  notificationVC = notificationVC ?? NotificationViewController()
+//       同上面的循环体一样，这里是获得MyProfileViewController控制器
         if User.shared.isLogin == true, let diskCachePAth = cachePathString(withfilename: MyProfileViewController.description()), let unarchiveVC = NSKeyedUnarchiver.unarchiveObject(withFile: diskCachePAth), unarchiveVC is MyProfileViewController {
             profileVC = unarchiveVC as! MyProfileViewController
         } else {
             profileVC = MyProfileViewController()
         }
         
+//        把控制器放在导航控制下面
+        let homeNav = UINavigationController(rootViewController: homeVC)
+        let nodesNav = UINavigationController(rootViewController: nodesVc)
+        let searchNav = UINavigationController(rootViewController: searchVC)
+        let notificationNav = UINavigationController(rootViewController: notificationVC)
+        let profileNav = UINavigationController(rootViewController: profileVC)
+//        设置控制器对应的tabbar信息
+        homeNav.tabBarItem = UITabBarItem(title: nil, image: R.Image.Home, selectedImage: R.Image.Home)
+        nodesNav.tabBarItem = UITabBarItem(title: nil, image: R.Image.Nodes, selectedImage: R.Image.Nodes)
+        searchNav.tabBarItem = UITabBarItem(title: nil, image: R.Image.TabarSearch, selectedImage: R.Image.TabarSearch)
+        notificationNav.tabBarItem = UITabBarItem(title: nil, image: R.Image.Notification, selectedImage: R.Image.Notification)
+        profileNav.tabBarItem = UITabBarItem(title: nil, image: R.Image.Profile, selectedImage: R.Image.Profile)
+//        tabbar控制器的子控制器数组
+        viewControllers = [homeNav, nodesNav, searchNav, notificationNav, profileNav]
+        refreshColorScheme()
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshColorScheme), name: NSNotification.Name.Setting.NightModeDidChange, object: nil)
+        
+    }
+    
+    
+    
+    
+    
+    @objc private func refreshColorScheme() {
+        
+    }
+    
+    func setNotificationNum(_ number: Int) {
+        notificationTabItem.badgeValue = number > 0 ? String(number) : nil
     }
 
     override func didReceiveMemoryWarning() {

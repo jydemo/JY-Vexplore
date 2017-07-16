@@ -11,12 +11,12 @@ import UIKit
 class TopicViewController: SwipeTransitionViewController {
     
     //private lazy var segmentedControl:
-    private lazy var segmentedControl: SegmentControl = {
+    fileprivate lazy var segmentedControl: SegmentControl = {
         let control = SegmentControl(titles: [R.String.Comment], selectedIndex: 0)
-        control.addTarget(self, action: #selector(segmentControlValueChanged(sender:)), for: .valueChanged)
+        control.addTarget(self, action: #selector(segmentControlValueChanged(_:)), for: .valueChanged)
         return control
     }()
-    private lazy var contentScrollView: UIScrollView = {
+    fileprivate lazy var contentScrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
@@ -26,14 +26,22 @@ class TopicViewController: SwipeTransitionViewController {
         return view
     }()
     
-    func segmentControlValueChanged(sender: SegmentControl) {
+    func segmentControlValueChanged(_ sender: SegmentControl) {
         currentIndex = sender.selectedIndex
         
     }
     var ignoreHandler: IgnoreHandler?
-    private var currentIndex: Int = 0
+    var unfavoriteHandler: UnfavoriteHandler?
     var topicID = R.String.Zero
-    private weak var presentingVC: UIViewController?
+    fileprivate let topicdetailVC = TopicDetailViewController()
+    fileprivate let topicCommentVC = UIViewController() //TopicCommentViewController()
+    //private let inputVC = TopicReplyingViewController()
+    //private let activityViewController: UIActivityViewController?
+    fileprivate let unfavorite = false
+    fileprivate var enableReplying = false
+    fileprivate weak var presentingVC: UIViewController?
+    fileprivate var currentIndex: Int = 0
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         presentStyle = .horizental
@@ -58,6 +66,7 @@ class TopicViewController: SwipeTransitionViewController {
         navigationItem.titleView = segmentedControl
         contentScrollView.backgroundColor = .background
         view.backgroundColor = .subBackground
+        setup()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -69,8 +78,31 @@ class TopicViewController: SwipeTransitionViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    fileprivate func setup() {
+        view.layoutIfNeeded()
+        //topicdetailVC.delegate = self
+        //topicdetailVC.inputView
+        topicdetailVC.topicID = topicID
+        
+        addChildViewController(topicdetailVC)
+        topicdetailVC.didMove(toParentViewController: self)
+        topicdetailVC.view.translatesAutoresizingMaskIntoConstraints = false
+        contentScrollView.addSubview(topicdetailVC.view)
+        
+        addChildViewController(topicCommentVC)
+        topicCommentVC.didMove(toParentViewController: self)
+        topicCommentVC.view.translatesAutoresizingMaskIntoConstraints = false
+        contentScrollView.addSubview(topicCommentVC.view)
+        
+        let bindings: [String: Any] = ["detailView": topicdetailVC.view, "commentView": topicCommentVC.view]
+        contentScrollView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[detailView][commentView]|", options: [.alignAllTop, .alignAllBottom], metrics: nil, views: bindings))
+        topicdetailVC.view.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor).isActive = true
+        topicCommentVC.view.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor).isActive = true
+        topicdetailVC.view.heightAnchor.constraint(equalTo: contentScrollView.heightAnchor).isActive = true
+        topicdetailVC.view.topAnchor.constraint(equalTo: contentScrollView.topAnchor).isActive = true
+    }
     
-    @objc private func closeBtnTapped() {
+    @objc fileprivate func closeBtnTapped() {
         dismiss(animated: true, completion: nil)
     }
 
