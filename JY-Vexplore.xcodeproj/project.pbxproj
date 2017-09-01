@@ -15,6 +15,7 @@
 		1707312C1F11EBBD00AA0D7D /* ProfileSectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1707312B1F11EBBD00AA0D7D /* ProfileSectionHeaderCell.swift */; };
 		1707312E1F11EE6800AA0D7D /* PersonalInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1707312D1F11EE6800AA0D7D /* PersonalInfoCell.swift */; };
 		171FC43C1F13A2A90060EAEA /* MemberTopicsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171FC43B1F13A2A90060EAEA /* MemberTopicsViewController.swift */; };
+		172A039F1F597DBE00BF7FE1 /* SegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172A039E1F597DBE00BF7FE1 /* SegmentControl.swift */; };
 		174250D31F1B830800265E82 /* SwipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174250D21F1B830800265E82 /* SwipeCell.swift */; };
 		17AF6D8A1EF75B5400E0257D /* MyFavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AF6D891EF75B5400E0257D /* MyFavoriteCell.swift */; };
 		17AF6D8C1EF75B9000E0257D /* ProfileActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AF6D8B1EF75B9000E0257D /* ProfileActionView.swift */; };
@@ -76,7 +77,6 @@
 		5C6B44971EC5463B00026AE5 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6B44931EC5463B00026AE5 /* Session.swift */; };
 		5C6B44991EC5467100026AE5 /* SharedR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6B44981EC5467100026AE5 /* SharedR.swift */; };
 		5C6B449B1EC55BAC00026AE5 /* TopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6B449A1EC55BAC00026AE5 /* TopicViewController.swift */; };
-		5C6B449D1EC5954500026AE5 /* SegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6B449C1EC5954500026AE5 /* SegmentControl.swift */; };
 		5C6B449F1EC5BB8C00026AE5 /* TopicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6B449E1EC5BB8C00026AE5 /* TopicDetailViewController.swift */; };
 		5C6B44A11EC5BBB500026AE5 /* BasetableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6B44A01EC5BBB500026AE5 /* BasetableViewController.swift */; };
 		5C8116321ED04480004116D9 /* TopicListViewcontroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8116311ED04480004116D9 /* TopicListViewcontroller.swift */; };
@@ -136,6 +136,7 @@
 		1707312B1F11EBBD00AA0D7D /* ProfileSectionHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSectionHeaderCell.swift; sourceTree = "<group>"; };
 		1707312D1F11EE6800AA0D7D /* PersonalInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoCell.swift; sourceTree = "<group>"; };
 		171FC43B1F13A2A90060EAEA /* MemberTopicsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTopicsViewController.swift; sourceTree = "<group>"; };
+		172A039E1F597DBE00BF7FE1 /* SegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentControl.swift; sourceTree = "<group>"; };
 		174250D21F1B830800265E82 /* SwipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCell.swift; sourceTree = "<group>"; };
 		17AF6D891EF75B5400E0257D /* MyFavoriteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFavoriteCell.swift; sourceTree = "<group>"; };
 		17AF6D8B1EF75B9000E0257D /* ProfileActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileActionView.swift; sourceTree = "<group>"; };
@@ -201,7 +202,6 @@
 		5C6B44931EC5463B00026AE5 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Session.swift; path = Networking/Session.swift; sourceTree = "<group>"; };
 		5C6B44981EC5467100026AE5 /* SharedR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedR.swift; sourceTree = "<group>"; };
 		5C6B449A1EC55BAC00026AE5 /* TopicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicViewController.swift; sourceTree = "<group>"; };
-		5C6B449C1EC5954500026AE5 /* SegmentControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentControl.swift; sourceTree = "<group>"; };
 		5C6B449E1EC5BB8C00026AE5 /* TopicDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicDetailViewController.swift; sourceTree = "<group>"; };
 		5C6B44A01EC5BBB500026AE5 /* BasetableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasetableViewController.swift; sourceTree = "<group>"; };
 		5C8116311ED04480004116D9 /* TopicListViewcontroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicListViewcontroller.swift; sourceTree = "<group>"; };
@@ -243,6 +243,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		172A039B1F597D2B00BF7FE1 /* UI Componnt */ = {
+			isa = PBXGroup;
+			children = (
+				172A039E1F597DBE00BF7FE1 /* SegmentControl.swift */,
+			);
+			name = "UI Componnt";
+			sourceTree = "<group>";
+		};
 		174250CF1F1B81BA00265E82 /* Notification */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,6 +369,7 @@
 		5C39DCA11EB9C3C500A19717 /* JY-Vexplore */ = {
 			isa = PBXGroup;
 			children = (
+				172A039B1F597D2B00BF7FE1 /* UI Componnt */,
 				174250CF1F1B81BA00265E82 /* Notification */,
 				17AF6D881EF75AE100E0257D /* Profile */,
 				5CE50B561ED7D7CF005AEC6D /* Topic */,
@@ -392,7 +401,6 @@
 				5C39DCAB1EB9C3C500A19717 /* LaunchScreen.storyboard */,
 				5C39DCAE1EB9C3C500A19717 /* Info.plist */,
 				5C6B449A1EC55BAC00026AE5 /* TopicViewController.swift */,
-				5C6B449C1EC5954500026AE5 /* SegmentControl.swift */,
 				5C6B449E1EC5BB8C00026AE5 /* TopicDetailViewController.swift */,
 				5C6779A71EC93C29005691A8 /* SquareLoadingView.swift */,
 				5C6779A91EC953A5005691A8 /* Define.swift */,
@@ -679,7 +687,6 @@
 				5CE50B581ED7D7FD005AEC6D /* TopicDetailHeaderCell.swift in Sources */,
 				5C6B449B1EC55BAC00026AE5 /* TopicViewController.swift in Sources */,
 				174250D31F1B830800265E82 /* SwipeCell.swift in Sources */,
-				5C6B449D1EC5954500026AE5 /* SegmentControl.swift in Sources */,
 				5C6779AE1EC98F3D005691A8 /* TopicDetailModel.swift in Sources */,
 				170731201F11CF1B00AA0D7D /* AboutMeCell.swift in Sources */,
 				5C39DCCB1EB9C40600A19717 /* BaseProfileViewController.swift in Sources */,
@@ -700,6 +707,7 @@
 				5C6779B01EC98FC7005691A8 /* TopicDetailContentView.swift in Sources */,
 				5C39DCCD1EB9C40600A19717 /* Utils.swift in Sources */,
 				5C39DCD91EB9C40600A19717 /* SiteSearchViewController.swift in Sources */,
+				172A039F1F597DBE00BF7FE1 /* SegmentControl.swift in Sources */,
 				5C6779AA1EC953A5005691A8 /* Define.swift in Sources */,
 				5C86E2521ECC3EC500BF4F05 /* HorizontalTabsCell.swift in Sources */,
 				5C6779A81EC93C29005691A8 /* SquareLoadingView.swift in Sources */,

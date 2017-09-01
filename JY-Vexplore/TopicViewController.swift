@@ -12,7 +12,7 @@ class TopicViewController: SwipeTransitionViewController {
     
     //private lazy var segmentedControl:
     fileprivate lazy var segmentedControl: SegmentControl = {
-        let control = SegmentControl(titles: [R.String.Comment], selectedIndex: 0)
+        let control = SegmentControl(titles: [R.String.Content, R.String.Comment], selectedIndex: 0)
         control.addTarget(self, action: #selector(segmentControlValueChanged(_:)), for: .valueChanged)
         return control
     }()
