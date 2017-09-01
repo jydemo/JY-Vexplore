@@ -72,7 +72,7 @@ class ProfileAvatarCell: UITableViewCell {
         contentView.addSubview(avatarImageView)
         contentView.addSubview(jointimeLabel)
         contentView.addSubview(contentLabel)
-        contentLabel.addSubview(bottomLine)
+        contentView.addSubview(bottomLine)
         let bindings = ["writeBtn": writeBtn ,
                         "nameLabel": nameLabel,
                         "avatarImageView" : avatarImageView,

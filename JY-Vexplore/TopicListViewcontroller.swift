@@ -24,7 +24,8 @@ class TopicListViewController: BasetableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TopicCell.self), for: indexPath) as! TopicCell
         let topicItem = topicList[indexPath.row]
-        cell.topicItemModel = topicItem
+        cell.model = topicItem
+        /*cell.topicItemModel = topicItem
         cell.topicTitleLabel.text = topicItem.topicTitle
         cell.userNameLabel.text = topicItem.username
         cell.nodeNameBtn.setTitle(topicItem.nodeName, for: .normal)
@@ -34,6 +35,8 @@ class TopicListViewController: BasetableViewController {
         if let avatar = topicItem.avatar, let url = URL(string: R.String.Https + avatar) {
            // cell.avatarImageView.avatarImage(withURL: url)
         }
+        cell.userNameLabel.text = topicItem.username
+        cell.avatarImageView.image = UIImage(named: "IMG_0173.jpg")
         cell.lastReplayDateAndUserLabel.text = R.String.NoRepliesNow
         if let lastReplyDate = topicItem.lastReplayDate {
             if topicItem.lastReplayUserName != nil {
@@ -41,7 +44,7 @@ class TopicListViewController: BasetableViewController {
             } else  {
                 cell.lastReplayDateAndUserLabel.text = String(format: R.String.PublicDate, lastReplyDate)
             }
-        }
+        }*/
         cell.delegate = self
         return cell
     }

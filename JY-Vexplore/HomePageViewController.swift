@@ -105,12 +105,13 @@ class HomePageViewController: UIViewController, UIScrollViewDelegate, Horizontal
     // MARK: - setupTabs
     fileprivate func setupTabs() {
         var previousView: UIView?
+        var offSetX: CGFloat = 0.0
         //循环tabs数组，取出标签
-        for index in 0..<tabs.count {
+        for _ in 0..<tabs.count {
             //新建HomePageTopicListViewController对象
             let topicListVC = HomePageTopicListViewController()
-            //配置topicListVC
-            topicListVC.view.translatesAutoresizingMaskIntoConstraints = false
+            //配置topicListVC 问题出在这里，这里取消了自动布局，需要手动布局，只是设置frame没有用，需要设置layout
+            //topicListVC.view.translatesAutoresizingMaskIntoConstraints = false
             topicListVC.dismissStyle = .none
             addChildViewController(topicListVC)
             //把topicListVC添加到tabsVC数组
@@ -118,9 +119,12 @@ class HomePageViewController: UIViewController, UIScrollViewDelegate, Horizontal
             //topicListVC添加到当前控制器
             topicListVC.didMove(toParentViewController: self)
             //topicListVC的视图作为子视图添加到contentSlideView
+            let frame  = CGRect(x: offSetX, y: 0, width: contentSlideView.bounds.width, height: contentSlideView.bounds.height)
+            topicListVC.view.frame = frame
             contentSlideView.addSubview(topicListVC.view)
+            offSetX += contentSlideView.bounds.width
             //调整topicListVC视图布局
-            topicListVC.view.widthAnchor.constraint(equalTo: contentSlideView.widthAnchor).isActive = true
+            /*topicListVC.view.widthAnchor.constraint(equalTo: contentSlideView.widthAnchor).isActive = true
             topicListVC.view.heightAnchor.constraint(equalTo: contentSlideView.heightAnchor).isActive = true
             topicListVC.view.topAnchor.constraint(equalTo: contentSlideView.topAnchor).isActive = true
             //如果存在previousView
@@ -136,7 +140,7 @@ class HomePageViewController: UIViewController, UIScrollViewDelegate, Horizontal
                 topicListVC.view.trailingAnchor.constraint(equalTo: contentSlideView.trailingAnchor).isActive = true
             }
             //把topicListVC的视图设置previousView（前视图）
-            previousView = topicListVC.view
+            previousView = topicListVC.view*/
         }
     }
     // MARK: - resetTabs

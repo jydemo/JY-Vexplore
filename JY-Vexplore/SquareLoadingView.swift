@@ -184,7 +184,7 @@ class SquareLoadingView: UIView {
             }
         }
         
-        for position in -1..<squareLengthSize {
+        for position in -1..<squareLengthSize * squareLengthSize {
             let square = squares[position + 1]
             square.isHidden = false
             square.setAffineTransform(.identity)

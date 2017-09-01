@@ -9,9 +9,38 @@
 import UIKit
 
 class TopicCell: UITableViewCell {
-    
-    lazy var  avatarImageView: UIImageView = {
-        let view = UIImageView()
+    var model: TopicItemModel? {
+        didSet {
+            if let topicItem = model {
+                self.topicItemModel = topicItem
+                self.topicTitleLabel.text = topicItem.topicTitle
+                self.userNameLabel.text = topicItem.username
+                self.nodeNameBtn.setTitle(topicItem.nodeName, for: .normal)
+                if let repliesNumberString = topicItem.repliesNumber, repliesNumberString.isEmpty == false {
+                    self.repliesNumberLabel.text = repliesNumberString
+                }
+                if let avatar = topicItem.avatar, let url = URL(string: R.String.Https + avatar) {
+                    // cell.avatarImageView.avatarImage(withURL: url)
+                }
+                self.userNameLabel.text = "username"
+                self.avatarImageView.image = UIImage(named: "IMG_0173.jpg")
+                self.lastReplayDateAndUserLabel.text = R.String.NoRepliesNow
+                if let lastReplyDate = topicItem.lastReplayDate {
+                    if topicItem.lastReplayUserName != nil {
+                        self.lastReplayDateAndUserLabel.text = lastReplyDate
+                    } else  {
+                        self.lastReplayDateAndUserLabel.text = String(format: R.String.PublicDate, lastReplyDate)
+                    }
+                }
+            }
+        }
+    }
+    lazy var  avatarImageView: AvatarImageView = {
+        let view = AvatarImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleToFill
+        view.tintColor = .body
+        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -26,6 +55,7 @@ class TopicCell: UITableViewCell {
     lazy var topicTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = R.Font.DynamicMedium
         label.numberOfLines = 0
         label.textColor = .body
         return label
@@ -103,7 +133,7 @@ class TopicCell: UITableViewCell {
         ]
         contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-8-[avatarImageView]-8-[userNameLabel]-8-[nodeNameBtn]", metrics: nil, views: bindings))
         contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[commentImageView]-1-[repliesNumberLabel]-8-|", metrics: nil, views: bindings))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userNameLabel]-6-[topicTitleLabel]-6-[lastReplayDateAndUserLabel]-3.5-[bottomLine(0.5)]|", options: [.alignAllLeading], metrics: nil, views: bindings))
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[userNameLabel]-8-[topicTitleLabel]-8-[lastReplayDateAndUserLabel]-3.5-[bottomLine(0.5)]|", options: [.alignAllLeading], metrics: nil, views: bindings))
         contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[avatarImageView]", metrics: nil, views: bindings))
         topicTitleLabel.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor).isActive = true
         avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor).isActive = true
