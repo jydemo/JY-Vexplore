@@ -208,7 +208,7 @@ private class IndicatorView: UIView {
     init() {
         super.init(frame: .zero)
         layer.masksToBounds = true
-        titleMaskView.backgroundColor = .clear
+        titleMaskView.backgroundColor = .black
     }
     
     required init?(coder aDecoder: NSCoder) {

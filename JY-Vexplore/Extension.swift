@@ -78,7 +78,7 @@ extension UIColor {
     }
     
     class var highlight: UIColor {
-        let colorString = currentViewPalette[5]
+        let colorString = currentViewPalette[6]
         return .colorWithHexString(colorString)
     }
     
