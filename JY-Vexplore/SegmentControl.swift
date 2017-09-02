@@ -87,6 +87,7 @@ class SegmentControl: UIControl {
         layer.borderWidth = 1.0
         layer.borderColor = UIColor.note.cgColor
         backgroundColor = UIColor.clear
+        
         addSubview(titleLabelsView)
         addSubview(indicatorView)
         addSubview(selectedTitleLabelsview)
@@ -156,8 +157,9 @@ class SegmentControl: UIControl {
     }
     
     private func elementFrame(forIndex index: Int) -> CGRect {
-        let eleementWidth = (bounds.width - totalInsetSize) / CGFloat(titleLabelsCount)
-        return CGRect(x: CGFloat(index) + eleementWidth + indicatorviewInset, y: indicatorviewInset, width: eleementWidth, height: bounds.height - totalInsetSize)
+        let elementWidth = (bounds.width - totalInsetSize) / CGFloat(titleLabelsCount)
+        //这里乘写成了加
+            return CGRect(x: CGFloat(index) * elementWidth + indicatorviewInset, y: indicatorviewInset, width: elementWidth, height: bounds.height - totalInsetSize)
     }
     
     private func nearestIndex(toPoint point: CGPoint) -> Int {
