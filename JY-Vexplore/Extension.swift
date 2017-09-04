@@ -81,7 +81,10 @@ extension UIColor {
         let colorString = currentViewPalette[6]
         return .colorWithHexString(colorString)
     }
-    
+    class var href: UIColor {
+        let colorString = currentViewPalette[7]
+        return .colorWithHexString(colorString)
+    }
     class var subBackground: UIColor {
         let colorstring = currentViewPalette[1]
         return .colorWithHexString(colorstring)
