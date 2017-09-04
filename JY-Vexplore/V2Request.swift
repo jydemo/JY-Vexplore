@@ -69,6 +69,31 @@ struct V2request {
             }
         }
         
+        static func getComments(withTopicID topicID: String, page: Int, completionHandler: @escaping (ValueResponse<([TopicCommentModel], Int)>) -> Void) {
+            let url = R.String.BaseUrl + "/t/" + topicID + "?p=\(page)"
+            Networking.request(url, headers: SharedR.Dict.MobileClientHeaders).responseParsableHTML { (response) in
+                if response.result.isSuccess, response.request?.url?.absoluteString != response.response?.url?.absoluteString {
+                    let response = ValueResponse<([TopicCommentModel], Int)>(success: false, message: [R.String.NeedLoginError])
+                    completionHandler(response)
+                    return
+                }
+                var topicCommentsArray: [TopicCommentModel] = []
+                var totalCommentPAge: Int = 1
+                if let htmlDoc = response.result.value {
+                    if let aRootNode = htmlDoc.xPath(".//div[@class='box']/div[attribute::id]") {
+                        for aNode in aRootNode {
+                            topicCommentsArray.append(TopicCommentModel(rootNode: aNode))
+                        }
+                    }
+                    if let totalCommentPageText = htmlDoc.xPath(".//a[@class='page_normal']")?.last?.content {
+                        totalCommentPAge = Int(totalCommentPageText) ?? 1
+                    }
+                }
+                let handler = ValueResponse(value: (topicCommentsArray, totalCommentPAge), success: response.result.isSuccess)
+                completionHandler(handler)
+            }
+        }
+        
         static func ignoreTopic(withTopicID topicID: String, completionHandler: @escaping (CommonResponse) -> Void) {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
