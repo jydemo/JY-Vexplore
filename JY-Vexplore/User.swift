@@ -20,6 +20,7 @@ class User {
     var isLogin: Bool {
         return username != nil
     }
+    var once: String?
     var username: String?
     fileprivate init() {
        username = UserDefaults.standard[R.Key.Username]
@@ -46,6 +47,14 @@ class User {
             }
         }
         
+    }
+    func logout() {
+        removeAllCookies()
+        username = nil
+        once = nil
+        notificationCount = 0
+        UserDefaults.standard[R.Key.Username] = nil
+        NotificationCenter.default.post(name: NSNotification.Name.User.DidLogout, object: nil)
     }
     
     func removeAllCookies() {
