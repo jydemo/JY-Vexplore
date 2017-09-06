@@ -37,7 +37,7 @@ class MainViewController: UITabBarController {
     //MARK: - buildUI
     fileprivate func buildUI() {
 //        是否登陆，是， 从缓存中加载 NodesViewController
-        if User.shared.isLogin == true, let diskCachePAth = cachePathString(withfilename: NodesViewController.description()), let unarchiveVC = NSKeyedUnarchiver.unarchiveObject(withFile: diskCachePAth), unarchiveVC is NotificationViewController {
+        if User.shared.isLogin == true, let diskCachePAth = cachePathString(withFilename: NodesViewController.description()), let unarchiveVC = NSKeyedUnarchiver.unarchiveObject(withFile: diskCachePAth), unarchiveVC is NotificationViewController {
 //            配置从缓存中加载的NotificationViewController
             let VC = unarchiveVC as! NotificationViewController
             if VC.username == User.shared.username {
@@ -48,7 +48,7 @@ class MainViewController: UITabBarController {
         }
 //        如果没有登录，新生成一个NotificationViewController控制器  notificationVC = notificationVC ?? NotificationViewController()
 //       同上面的循环体一样，这里是获得MyProfileViewController控制器
-        if User.shared.isLogin == true, let diskCachePAth = cachePathString(withfilename: MyProfileViewController.description()), let unarchiveVC = NSKeyedUnarchiver.unarchiveObject(withFile: diskCachePAth), unarchiveVC is MyProfileViewController {
+        if User.shared.isLogin == true, let diskCachePAth = cachePathString(withFilename: MyProfileViewController.description()), let unarchiveVC = NSKeyedUnarchiver.unarchiveObject(withFile: diskCachePAth), unarchiveVC is MyProfileViewController {
             profileVC = unarchiveVC as! MyProfileViewController
         } else {
             profileVC = MyProfileViewController()
@@ -78,7 +78,7 @@ class MainViewController: UITabBarController {
     
     
     @objc private func refreshColorScheme() {
-        
+        tabBar.setuptabBar()
     }
     
     func setNotificationNum(_ number: Int) {
