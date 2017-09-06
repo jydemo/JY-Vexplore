@@ -20,10 +20,10 @@ class TopicCell: UITableViewCell {
                     self.repliesNumberLabel.text = repliesNumberString
                 }
                 if let avatar = topicItem.avatar, let url = URL(string: R.String.Https + avatar) {
-                    // cell.avatarImageView.avatarImage(withURL: url)
+                    self.avatarImageView.avatarImage(withURL: url)
                 }
                 self.userNameLabel.text = "username"
-                self.avatarImageView.image = UIImage(named: "IMG_0173.jpg")
+               // self.avatarImageView.image = UIImage(named: "IMG_0173.jpg")
                 self.lastReplayDateAndUserLabel.text = R.String.NoRepliesNow
                 if let lastReplyDate = topicItem.lastReplayDate {
                     if topicItem.lastReplayUserName != nil {
