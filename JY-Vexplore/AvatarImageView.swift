@@ -9,35 +9,43 @@
 import UIKit
 
 class AvatarImageView: UIImageView {
-    fileprivate var imageDownloadID: ImageDownload?
+    fileprivate var imageDownloadID: ImageDownloadId?
     
     func avatarImage(withURL url: URL) {
-        /*setImage(withURL: url, placeholerImage: R.Image.AvatarPlaceholder, imageProcessing: { (image) -> UIImage in
+        setImage(withURL: url, placeholerImage: R.Image.AvatarPlaceholder, imageProcessing: { (image) -> UIImage in
             return image.roundCornerImage()
-        })*/
+        })
     }
     
     func cancelImageDownloadTaskIfNeed() {
-        guard let _ = imageDownloadID else {
+        guard let imageDownloadId = imageDownloadID else {
             return
         }
-        //ImageDownload
-        
+        ImageDownloader.default.cancelImageDownloadTask(for: imageDownloadId)
         self.imageDownloadID = nil
     }
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
     
-    /*private func setImage(withURL url: URL, placeholerImage: UIImage?, imageProcessing: ((_ image: UIImage) -> UIImage)?) {
+    
+    private func setImage(withURL url: URL, placeholerImage: UIImage?, imageProcessing: ((_ image: UIImage) -> UIImage)?) {
         image = placeholerImage
-        //ImageCache.default
-        return image
-    }*/
+        ImageCache.default.retrieveImage(forKey: url.cacheKey) { (image) in
+            if image != nil {
+                dispatch_async_safely_to_main_queue {
+                    self.image = image
+                }
+            } else {
+                self.cancelImageDownloadTaskIfNeed()
+                self.imageDownloadID = ImageDownloader.default.downloadImage(with: url, completionHandler: { (image, originalData, error) in
+                    if let image = image, let roundedImage = imageProcessing?(image) {
+                        ImageCache.default.cache(image: image, originalData: originalData, forKey: url.cacheKey)
+                        dispatch_async_safely_to_main_queue {
+                            self.image = roundedImage
+                        }
+                    }
+                })!
+            }
+        }
+    }
     
     
     
