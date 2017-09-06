@@ -78,6 +78,7 @@ class MainViewController: UITabBarController {
     
     
     @objc private func refreshColorScheme() {
+        //对tabbarItem调整
         tabBar.setuptabBar()
     }
     
