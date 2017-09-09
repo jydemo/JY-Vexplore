@@ -8,7 +8,8 @@
 
 import UIKit
 
-class TopicCommentsViewController: BasetableViewController {
+class TopicCommentsViewController: BasetableViewController, commentImageDelegate, CommentCellDelegate {
+    
     var topicID = R.String.Zero
     private var  currentPage = 1
     private var totalPageNum = 1
@@ -116,7 +117,7 @@ class TopicCommentsViewController: BasetableViewController {
         let comment = isOwnerView ? ownerComments[indexPath.row] : topicComments[indexPath.row]
         cell.commentModel = comment
         if let avatar = comment.avatar, let url = URL(string: R.String.Https + avatar) {
-            
+            cell.avatarImageView.avatarImage(withURL: url)
         }
         cell.userNameLabel.text = comment.username
         cell.dateLabel.text = comment.date
@@ -130,10 +131,56 @@ class TopicCommentsViewController: BasetableViewController {
         if comment.username == ownerName {
             cell.ownerLabel.isHidden = false
         }
-        //let size = CGSize(width: view.frame.width - 64, height: CGFloat.greatestFiniteMagnitude)
-    
+        let size = CGSize(width: view.frame.width - 64, height: CGFloat.greatestFiniteMagnitude)
+        if let layout = RichTextLayout(with: size, text: comment.contentAttributedString) {
+            cell.commentLabel.textLayout = layout
+            for attachment in layout.attachments {
+                if let image = attachment as? CommentImageView {
+                    image.delegate = self
+                }
+            }
+        }
+        cell.commentLabel.highlightTapAction = { [unowned self] (url) -> Void in
+            URLAnalyzer.Analyze(url: url, handleViewController: self)
+        }
+        cell.delegate = self
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let comment = isOwnerView ? ownerComments[indexPath.row] : topicComments[indexPath.row]
+        let size = CGSize(width: view.frame.width - 64, height: CGFloat.greatestFiniteMagnitude)
+        let layout = RichTextLayout(with: size, text: comment.contentAttributedString)
+        let contentheight = ceil(layout!.bounds.height)
+        let height = 10 + ceil(R.Font.Small.lineHeight) + 4 + contentheight + 8 + ceil(R.Font.ExtraSmall.lineHeight) + 4
+        return height
+    }
+    
+    func tableView(_ tableView: UITableView, willdisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: IndexPath) {
+        if UserDefaults.isHightlightOwnerrepliesEnabled {
+            let comment = isOwnerView ? ownerComments[indexPath.row] : topicComments[indexPath.row]
+            if comment.username == ownerName {
+                cell.contentView.backgroundColor = UIColor.highlight.withAlphaComponent(0.07)
+            }
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        for cell in tableView.visibleCells as! [TopiCommentCell] {
+            cell.reset()
+        }
+    }
+    
+    func commentImnageSingleTap(_ imageView: CommentImageView) {
+        
+    }
+    func cellWillBeginSwipe(at indexPath: IndexPath) {
+        
+    }
+    func thankBtnTapped(withReplyID replyID: String, indexPath: IndexPath) {}
+    func igonreBtnTapped(withReplyID replyID: String){}
+    func replyBtnTapped(withUsername username: String){}
+    func longPress(at  indexPath: IndexPath){}
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
