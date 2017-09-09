@@ -73,8 +73,8 @@ class TopiCommentCell: SwipeCell {
         label.text = R.String.Zero
         return label
     }()
-    lazy var commentLabel: UIView = {
-        let label = UIView()
+    lazy var commentLabel: RichTextLabel = {
+        let label = RichTextLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setContentHuggingPriority(UILayoutPriorityRequired, for: .vertical)
         return label
