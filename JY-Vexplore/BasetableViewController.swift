@@ -163,6 +163,7 @@ class BasetableViewController: SwipeTransitionViewController, UITableViewDataSou
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TopicCell.self), for: indexPath) as! TopicCell
+        //let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: JYTableViewCell.self), for: indexPath) as! JYTableViewCell
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
